@@ -22,10 +22,15 @@ implements AdapterView.OnItemSelectedListener,
     private Spinner spSabores;
     private ImageView imgPizza;
     private RadioGroup rgTamanho;
+    private CheckBox chkBorda;
+    private TextView txtPreco;
 
     private List<PizzaBean> pizzas;
     private ArrayAdapter<PizzaBean> adpPizza;
-    private PizzaBean selecionada;
+
+    private PizzaBean pizzaSelecionada;
+    private int tamanhoSelecionado;
+    private boolean bordaSelecionada;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,9 +43,26 @@ implements AdapterView.OnItemSelectedListener,
         imgPizza = (ImageView) findViewById(R.id.imgPizza);
         rgTamanho = (RadioGroup) findViewById(R.id.rgTamanho);
         rgTamanho.setOnCheckedChangeListener(this);
+        chkBorda = (CheckBox) findViewById(R.id.chkBorda);
+        txtPreco = (TextView) findViewById(R.id.txtPreco);
 
     }
 
+    private void calcularPreco(){
+        double preco = pizzaSelecionada.getPreco();
+
+        if (tamanhoSelecionado == R.id.rbPequeno)
+            preco += 5.0;
+        else if (tamanhoSelecionado == R.id.rbMedio)
+            preco += 10.0;
+        else if (tamanhoSelecionado == R.id.rbGrande)
+            preco += 15.0;
+
+        if (bordaSelecionada)
+            preco += 5.0;
+
+        txtPreco.setText(String.valueOf(preco));
+    }
 
     private void popularSpinnerSabores() {
 
@@ -67,11 +89,12 @@ implements AdapterView.OnItemSelectedListener,
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
         // retorna a pizza (PizzaBean) selecionada em position
-        PizzaBean sel = (PizzaBean) parent.getItemAtPosition(position);
-        Toast.makeText(this, sel.getSabor(), Toast.LENGTH_SHORT).show();
+        pizzaSelecionada = (PizzaBean) parent.getItemAtPosition(position);
+        Toast.makeText(this, pizzaSelecionada.getSabor(), Toast.LENGTH_SHORT).show();
         // troca a imagem da pizza (ImageView) de acordo
         // com o R.drawable definido no PizzaBean
-        imgPizza.setImageResource(sel.getImagem());
+        imgPizza.setImageResource(pizzaSelecionada.getImagem());
+        calcularPreco();
     }
 
     @Override
@@ -94,6 +117,20 @@ implements AdapterView.OnItemSelectedListener,
             t = "GRANDE";
 
         Toast.makeText(this, t, Toast.LENGTH_SHORT).show();
+
+        tamanhoSelecionado = checkedId;
+        calcularPreco();
+    }
+
+    public void borda(View v){
+
+        if (chkBorda.isChecked())
+            Toast.makeText(this, "COM BORDA", Toast.LENGTH_SHORT).show();
+        else
+            Toast.makeText(this, "SEM BORDA", Toast.LENGTH_SHORT).show();
+
+        bordaSelecionada = chkBorda.isChecked();
+        calcularPreco();
     }
 }
 
