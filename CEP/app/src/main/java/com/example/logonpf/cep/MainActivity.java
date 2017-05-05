@@ -76,8 +76,8 @@ public class MainActivity extends AppCompatActivity {
             // https://github.com/esensato/2TDSS.git
             try {
 
-                boolean erro = response.getBoolean("erro");
-                if (erro) {
+                Boolean erro = response.optBoolean("erro");
+                if (erro != null && erro) {
 
                     txtRua.setText("CEP INVALIDO");
                     txtCidade.setText("CEP INVALIDO");
