@@ -22,6 +22,10 @@ public class MainActivity extends AppCompatActivity
     private List<Marca> marcas;
     private ArrayAdapter<Marca> adpMarca;
 
+    private Spinner spVeiculo;
+    private List<Veiculo> veiculos;
+    private ArrayAdapter<Veiculo> adpVeiculo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,8 +37,15 @@ public class MainActivity extends AppCompatActivity
         adpMarca = new ArrayAdapter<Marca>(this,
                 android.R.layout.simple_spinner_item,marcas);
         spMarca.setAdapter(adpMarca);
-
         adpMarca.add(new Marca(-1, "Escolha a Marca"));
+
+        spVeiculo = (Spinner) findViewById(R.id.spVeiculo);
+        spVeiculo.setOnItemSelectedListener(this);
+        veiculos = new ArrayList<Veiculo>();
+        adpVeiculo = new ArrayAdapter<Veiculo>(this,
+                android.R.layout.simple_spinner_item,veiculos);
+        spVeiculo.setAdapter(adpVeiculo);
+        adpVeiculo.add(new Veiculo(-1, "Escolha o Veiculo"));
 
         carregarMarcas();
 
@@ -51,11 +62,32 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    private void carregarVeiculos(int idMarca) {
+String url =
+"http://fipeapi.appspot.com/api/1/carros/veiculos/" + idMarca + ".json";
+
+        JsonArrayRequest req = new JsonArrayRequest(url,
+                new RequestVeiculo(adpVeiculo),
+                new RequestError());
+        RequestQueue q = Volley.newRequestQueue(this);
+        q.add(req);
+
+    }
+
+    // http://fipeapi.appspot.com/api/1/carros/veiculo/21/4828.json
+
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-        Marca m = (Marca) parent.getItemAtPosition(position);
-        Toast.makeText(this, "Cod: " + m.getId(), Toast.LENGTH_SHORT).show();
+        Object sel = parent.getItemAtPosition(position);
+
+        if (sel instanceof Marca) {
+            adpVeiculo.clear();
+            Marca m = (Marca) sel;
+            carregarVeiculos(m.getId());
+        } else if (sel instanceof Veiculo) {
+
+        }
 
     }
 
