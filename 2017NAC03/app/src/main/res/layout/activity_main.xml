@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="esensato.a2017nac03.MainActivity">
+
+
+    <EditText android:id="@+id/edtTentativas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Número tentativas"/>
+
+    <Button android:id="@+id/btnIniciar"
+        android:layout_below="@id/edtTentativas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Iniciar Jogo"
+        android:onClick="iniciar"/>
+
+    <TextView android:id="@+id/txtResultado"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/holo_blue_light"
+        android:textSize="40sp"
+        android:layout_below="@id/btnIniciar"
+        android:layout_marginTop="20dp"/>
+
+</RelativeLayout>
